@@ -3,6 +3,8 @@
 
 import uuid
 from datetime import datetime
+from models.__init__ import storage
+from models.engine.file_storage import new
 
 
 class BaseModel:
@@ -32,6 +34,9 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = self.created_at
 
+        # if it’s a new instance (not from a dictionary representation)
+        new(storage)
+
     def __str__(self):
         """string representation of class attributes"""
         a = self.__class__.__name__
@@ -42,6 +47,7 @@ class BaseModel:
     def save(self):
         """updates attribute updated_at with current datetime"""
         self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """dictionary containing all key/values of instances"""
