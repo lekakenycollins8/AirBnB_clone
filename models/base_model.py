@@ -3,8 +3,7 @@
 
 import uuid
 from datetime import datetime
-from models.__init__ import storage
-from models.engine.file_storage import new
+from models import storage
 
 
 class BaseModel:
@@ -35,7 +34,7 @@ class BaseModel:
             self.updated_at = self.created_at
 
         # if it’s a new instance (not from a dictionary representation)
-        new(storage)
+        storage.new(self)
 
     def __str__(self):
         """string representation of class attributes"""
@@ -51,7 +50,7 @@ class BaseModel:
 
     def to_dict(self):
         """dictionary containing all key/values of instances"""
-        object_dict = self.__dict__
+        object_dict = self.__dict__.copy()
         object_dict['__class__'] = self.__class__.__name__
         object_dict['created_at'] = self.created_at.isoformat()
         object_dict['updated_at'] = self.updated_at.isoformat()
