@@ -3,7 +3,10 @@
 
 
 import cmd
-
+from models.base_model import BaseModel
+from models import storage
+import json
+import re
 
 class HBNBCommand(cmd.Cmd):
     """implements quit, EOF, help and prompt"""
@@ -12,18 +15,50 @@ class HBNBCommand(cmd.Cmd):
         """Quit command to exit the program"""
         return True
     def do_EOF(self, arg):
-        """EOF coammnd to exit the program"""
+        """EOF command to exit the program"""
         return True
-
-    def postcmd(self, stop, arg):
-        """executes EOF"""
-        if arg == "EOF":
-            return True
-        return stop
 
     def emptyline(self):
         """does not execute empty line plus ENTER"""
         pass
+
+    def do_create(self, arg):
+        """creates a new instance of Base class"""
+        class_name = arg.strip()
+        if not class_name:
+            print("** class name missing **")
+            return
+        if class_name not in storage.allclasses():
+            print("** class doesn't exist **")
+            return
+        if class_name in storage.allclasses():
+            instance = storage.allclasses()[class_name]()
+            instance.save()
+            print(instance.id)
+            return
+
+    def do_show(self, arg):
+        """Prints the string representation of an instance
+        based on the class name and id"""
+        args = arg.strip().split()
+        if not args:
+            print("** class name missing **")
+            return
+        class_name = args[0]
+        if class_name not in storage.allclasses():
+            print("** class doesn't exist **")
+            return
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+        instance_id = args[1]
+        key = "{}.{}".format(class_name, instance_id)
+        if key in storage.all().keys():
+            print(storage.all()[key])
+        else:
+            print("** no instance found **")
+        
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
