@@ -23,7 +23,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """creates a new instance of Base class"""
+        """creates a new instance o Base and all child classes"""
         class_name = arg.strip()
         if not class_name:
             print("** class name missing **")
@@ -82,6 +82,21 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** no instance found **")
             return
+
+    def do_all(self, arg):
+        """prints string representation of instances based on not on class name"""
+        if not arg:
+            instances = storage.all().values()
+        else:
+            class_name = arg.split()[0]
+            if class_name not in storage.allclasses():
+                print("** class doesn't exist")
+                return
+
+            instances = [obj for obj in storage.all().values()if type
+                    (obj).__name__ == class_name]
+        str_instances = [str(obj) for obj in instances]
+        print(str_instances)
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
