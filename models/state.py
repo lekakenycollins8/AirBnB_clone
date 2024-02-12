@@ -11,7 +11,3 @@ class State(BaseModel):
         name: empty string for state
     """
     name = ""
-    def __init__(self):
-        """instatiation of inherited attributes"""
-        super().__init__(id, created_at, updated_at)
-
