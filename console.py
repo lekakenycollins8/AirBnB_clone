@@ -117,25 +117,25 @@ class HBNBCommand(cmd.Cmd):
         if len(args) < 2:
             print("** instance id missing **")
             return
-        if len(args) < 3:
-            print("** attribute name missing **")
-            return
-        if len(args) < 4:
-            print("** value missing **")
-            return
         instance_id = args[1]
         key = "{}.{}".format(class_name, instance_id)
         if key not in storage.all().keys():
             print("** no instance found **")
             return
         instance_dict = storage.all()[key]
-        if len(args) == 4:
-            attribute = args[2]
-            value = args[3]
-            if attribute in storage.classes_attributes()[class_name]:
-                value = storage.classes_attributes()[class_name]
-                setattr(instance_dict, attribute, value)
-                storage.save()
+        if len(args) < 3:
+            print("** attributes name missing **")
+            return
+        if args[2].startswith("{") and args[-1].endswith("}"):
+            attributes_dict = eval(" ".join(args[2:]))
+            for attr_name, attr_value in attributes_dict.items():
+                setattr(instance_dict, attr_name, attr_value)
+        else:
+            for i in range(2, len(args), 2):
+                attribute_name = args[i]
+                attribute_value = args[i + 1]
+                setattr(instance_dict, attribute_name, attribute_value)
+        storage.save()
 
     def do_count(self, arg):
         """counts instances of a class"""
