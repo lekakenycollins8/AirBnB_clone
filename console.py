@@ -11,6 +11,8 @@ import re
 class HBNBCommand(cmd.Cmd):
     """implements quit, EOF, help and prompt"""
     prompt = "(hbnb) "
+    all_methods = {'all', 'count', 'show', 'destroy', 'update'}
+
     def do_quit(self, arg):
         """Quit command to exit the program"""
         return True
@@ -142,37 +144,27 @@ class HBNBCommand(cmd.Cmd):
         print(counter)
 
 
-    def default(self, arg):
-        """Called on an input line when the command prefix is not recognized."""
-        args = arg.split(".")
-        if len(args) < 2:
-            print("** invalid command **")
-            return
-        class_name, method_name = args[0], args[1]
-        method_name = method_name.split("(")[0]
-        method_args = re.findall(r'"(.*?)"|\b(\w+)\b', arg)
+    def precmd(self, arg):
+        """advanced command syntax
+        Usage: <class name>.<command>(<id>)
+        """
+        args = arg.split(".", 1)
+        if len(args) != 2:
+            return arg
+        class_name, remaining = args
+        args = remaining.split("(", 1)
+        
+        command, args_part = args
+        args_part = args_part.rstrip(")")
+        id_, *argms = map(str.strip, args_part.split(","))
 
-        if class_name in storage.allclasses():
-            cls = storage.allclasses()[class_name]
-            if method_name == "all":
-                print(cls.all())
-            elif method_name == "count":
-                print(cls.count())
-            elif method_name == "destroy":
-                inst_id = method_args[1][0] if method_args[1][0] else method_args[1][1]
-                storage.destroy(cls, inst_id)
-            elif method_name == "show":
-                inst_id = method_args[1][0] if method_args[1][0] else method_args[1][1]
-                print(storage.show(cls, inst_id))
-            elif method_name == "update":
-                inst_id = method_args[1][0] if method_args[1][0] else method_args[1][1]
-                attr_name = method_args[2][0] if method_args[2][0] else method_args[2][1]
-                attr_value = method_args[3][0] if method_args[3][0] else method_args[3][1]
-                storage.update(cls, inst_id, attr_name, attr_value)
+        if command not in HBNBCommand.all_methods:
+            return arg
+        if argms and argms[0].startswith("{") and argms[-1].endswith("}"):
+            argms = " ".join(argms)
         else:
-            print ("** class doesn't exist **")
-
-
+            argms = " ".join(argms).replace(",", "")
+        return "{} {} {} {}".format(command, class_name, id_, argms)
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
