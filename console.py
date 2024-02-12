@@ -16,6 +16,7 @@ class HBNBCommand(cmd.Cmd):
     def do_quit(self, arg):
         """Quit command to exit the program"""
         return True
+    
     def do_EOF(self, arg):
         """EOF command to exit the program"""
         return True
@@ -60,6 +61,8 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** no instance found **")
             return
+        
+    def do_destroy(self, arg):
         """ Deletes an instance based on the class name and
         id (save the change into the JSON file)
         """
