@@ -107,38 +107,33 @@ article h2 {
 
 .pet_icon {
         display: inline-block;
-        background-image: url("../pet_icon.png");
+        background-image: url("../images/pet_icon.png");
         background-repeat: no-repeat;
         background-size: cover;
         width: 25px;
         height: 25px;
-        margin-right: 100px;
-
 }
 
 .tv_icon {
         display: inline-block;
-        background-image: url("../tv_icon.png");
+        background-image: url("../images/tv_icon.png");
         background-repeat: no-repeat;
         background-size: cover;
         width: 25px;
         height: 25px;
-        margin-right: 100px;
 }
 
 .wifi_icon {
         display: inline-block;
-        background-image: url("../wifi_icon.png");
+        background-image: url("../images/wifi_icon.png");
         background-repeat: no-repeat;
         background-size: cover;
         width: 25px;
         height: 25px;
-        margin-right: 100px;
 }
 
-h3 {
+.reviews {
     display: block;
-    float: left;
     width: 95%;
     text-align: left;
     margin-left: 20px;

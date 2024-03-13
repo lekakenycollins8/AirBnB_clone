@@ -2,7 +2,7 @@
 	background-color: white;
 	width: 100%;
 	border: 1px solid #DDDDDD;
-	border-radius: 4px;
+	border-radius: 40px;
 }
 
 .locations {
@@ -11,6 +11,7 @@
 	width: 25%;
 	margin-left: 45px;
 	border-right: 1px solid #DDDDDD;
+	padding-top: 20px;
 }
 
 .amenities {
@@ -18,6 +19,7 @@
 	vertical-align: middle;
 	width: 25%;
 	margin-left: 45px;
+	padding-top: 20px;
 }
 
 .locations h2, .amenities h2 {
@@ -68,6 +70,6 @@ button {
     	float: right;
 }
 
-button: hover {
+button:hover {
 	opacity: 90%;
 }
